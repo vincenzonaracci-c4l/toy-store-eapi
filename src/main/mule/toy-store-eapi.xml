@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-	<flow name="toy-store-eapi-main">
+    <flow name="toy-store-eapi-main">
         <http:listener config-ref="toy-store-eapi-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
@@ -11,8 +11,7 @@
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="toy-store-eapi-config" />
-		<error-handler ref="Error_Handler_APIKIT" />
-
+        <error-handler ref="Error_Handler_APIKIT" />
     </flow>
     <flow name="toy-store-eapi-console">
         <http:listener config-ref="toy-store-eapi-httpListenerConfig" path="/console/*">
@@ -25,119 +24,39 @@
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="toy-store-eapi-config" />
-		<error-handler ref="Error_Handler_APIConsole" />
+        <error-handler ref="Error_Handler_APIConsole" />
     </flow>
-    <flow name="put:\update-order:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "Order and payment updated successfully"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="put:\customer\(customerID)\orders:application\json:toy-store-eapi-config">
+		<set-variable value="#[attributes.uriParams.'customerID']" doc:name="URIparams" doc:id="ef300ea3-651f-405d-b994-183086430192" variableName="URIparams"/>
+		<flow-ref doc:name="put-update-order" doc:id="0c3eeaa8-167a-4aaf-9857-e999e2ce5318" name="put-update-order"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
-    <flow name="put:\update-user:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "User updated successfully"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="put:\customer\(customerID):application\json:toy-store-eapi-config">
+        <set-variable value="#[attributes.uriParams.'customerID']" doc:name="URIparams" doc:id="50e4dcba-16e1-4f6d-9dad-c6a7bcdbb528" variableName="URIparams" />
+		<flow-ref doc:name="put-update-user" doc:id="ff29ae62-b418-4c19-a9fe-6b07a4ac4816" name="put-update-user"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
-    <flow name="delete:\delete-customer:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Customer deleted successfully" as String {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="delete:\customer\(customerID)\orders:toy-store-eapi-config">
+        <set-variable value="#[attributes.uriParams.'customerID']" doc:name="URIparams" doc:id="1fd93914-550a-4c20-97cf-15379d74bdb6" variableName="URIparams" />
+		<flow-ref doc:name="delete-order" doc:id="b883a4ca-6301-4161-942a-d686ab5780a6" name="delete-order"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
-    <flow name="delete:\delete-orders:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Order deleted successfully" as String {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="delete:\customer\(customerID):toy-store-eapi-config">
+        <set-variable value="#[attributes.uriParams.'customerID']" doc:name="URIparams" doc:id="221d2697-b645-4fbc-98dd-6e2132c6456f" variableName="URIparams" />
+		<flow-ref doc:name="delete-customer" doc:id="9118049d-932b-460b-b406-9bd32997a018" name="delete-customer"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
     <flow name="get:\customer:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  customerCode: 12345,
-  customerInfo: {
-    firstName: "Ciccio",
-    lastName: "Pasticcio",
-    gender: "Female",
-    address: {
-      street: "Via Diaz",
-      city: "Kiev",
-      state: "Ukrain"
-    },
-    orders: {
-      products: "Pencilcase",
-      paymentTypes: "Bancomat",
-      totalSpending: 132.32,
-      discountedSpending: 130
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="get-customer-noord" doc:id="3ed74fc6-73dd-4ff1-b331-07a154b84ca3" name="get-customer-noord"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
-    <flow name="get:\customer-noord:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  customerCode: 12345,
-  customerInfo: {
-    firstName: "Ciccio",
-    lastName: "Pasticcio",
-    gender: "Female",
-    address: {
-      street: "Via Diaz",
-      city: "Kiev",
-      state: "Ukrain"
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="get:\customer\(customerID):toy-store-eapi-config">
+        <set-variable value="#[attributes.uriParams.'customerID']" doc:name="URIparams" doc:id="774614fa-f88d-4642-b4ae-f128faad987f" variableName="URIparams" />
+		<flow-ref doc:name="get-customer" doc:id="a255f2fc-9769-4143-af9f-fb7d6ff7f83f" name="get-customer"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
-    <flow name="post:\create-user:toy-store-eapi-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "User created successfully"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+    <flow name="post:\customer:application\json:toy-store-eapi-config">
+		<flow-ref doc:name="post-create-user" doc:id="92c90a8a-d41a-42ab-8e1f-01a56d2d9e19" name="post-create-user"/>
 		<error-handler ref="Error_Handler_APP" />
     </flow>
 </mule>

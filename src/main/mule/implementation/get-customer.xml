@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="get-customer" doc:id="f1196303-c8a6-41cc-81c1-99d3735d3d3c" >
+		<http:request doc:name="Request to pAPI to get a single customer" doc:id="0b3136c7-5aeb-47ab-8b9e-5bec664741a5" config-ref="HTTP_Request_configuration" path="/customer/{customerID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"customerID" : vars.URIparams
+}]]]></http:uri-params>
+		</http:request>
+	</sub-flow>
+</mule>
