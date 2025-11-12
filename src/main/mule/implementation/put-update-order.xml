@@ -10,13 +10,12 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<amqp:publish doc:name="Publish to the queue" doc:id="8ac24d0b-7dea-447a-b4b4-889e8dbd7b61" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="put.update.order">
 			<amqp:message >
 				<amqp:body ><![CDATA[#[%dw 2.0
+import mergeWith from dw::core::Objects
 output application/json
 ---
-payload mapObject ((value, key, index) -> 
 {
-    (key): value,
-    "URIparams": vars.URIparams
-})]]]></amqp:body>
+    "URIparams" : vars.URIparams
+} mergeWith payload]]]></amqp:body>
 			</amqp:message>
 		</amqp:publish>
 		<ee:transform doc:name="Result message" doc:id="57122397-3f76-4bce-9e54-c0149c95e757" >
