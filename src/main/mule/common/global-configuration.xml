@@ -1,50 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:amqp="http://www.mulesoft.org/schema/mule/amqp"
-	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd">
-	<http:listener-config
-		name="toy-store-eapi-httpListenerConfig">
-		<http:listener-connection
-			host="${http.listener.host}" port="${http.listener.port}" />
-	</http:listener-config>
-	<apikit:config name="toy-store-eapi-config"
-		api="resource::89799b47-5637-405f-94db-38eccef79285:toy-store-eapi:1.0.1:raml:zip:toy-store-eapi.raml"
-		outboundHeadersMapName="outboundHeaders"
-		httpStatusVarName="httpStatus" />
-	<global-property doc:name="Global Property"
-		doc:id="94b6b5b1-71f0-4930-ba51-41ef3b72c87a" name="mule.env"
-		value="loc" />
-	<configuration-properties
-		doc:name="Configuration properties"
-		doc:id="4888c638-f93c-4697-b209-b5ceb38ab7a8"
-		file="properties/${mule.env}.yaml" />
-	<global-property doc:name="Global Property"
-		doc:id="a405298a-931a-4a4a-9364-78c74ecef355" name="secure.key"
-		value="toystore" />
-	<secure-properties:config
-		name="Secure_Properties_Config" doc:name="Secure Properties Config"
-		doc:id="77b97b27-bdb1-4103-8890-7ecd807527cc"
-		file="properties/${mule.env}-secure.yaml" key="${secure.key}">
-		<secure-properties:encrypt
-			algorithm="Blowfish" />
-	</secure-properties:config>
-	<http:request-config
-		name="HTTP_Request_configuration"
-		doc:name="HTTP Request configuration"
-		doc:id="3f2d8aaa-b62b-4c27-b1f9-c843bffd626f" basePath="/api"
-		responseTimeout="300000" sendCorrelationId="ALWAYS">
-		<http:request-connection
-			host="${http.request.host}" port="${http.request.port}" />
-	</http:request-config>
-	<amqp:config name="AMQP_Config" doc:name="AMQP Config"
-		doc:id="72009995-8d48-484b-aece-bbd2af4cd46f"
-		sendCorrelationId="ALWAYS">
-		<amqp:connection host="localhost" port="5672"
-			username="myuser" password="mypassword" />
-	</amqp:config>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:amqp="http://www.mulesoft.org/schema/mule/amqp" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd">
+    <http:listener-config name="toy-store-eapi-httpListenerConfig">
+        <http:listener-connection host="${http.listener.host}" port="${http.listener.port}" />
+    </http:listener-config>
+    <apikit:config name="toy-store-eapi-config" api="resource::89799b47-5637-405f-94db-38eccef79285:toy-store-eapi:1.0.3:raml:zip:toy-store-eapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <global-property doc:name="Global Property" doc:id="94b6b5b1-71f0-4930-ba51-41ef3b72c87a" name="mule.env" value="loc" />
+    <configuration-properties doc:name="Configuration properties" doc:id="4888c638-f93c-4697-b209-b5ceb38ab7a8" file="properties/${mule.env}.yaml" />
+    <global-property doc:name="Global Property" doc:id="a405298a-931a-4a4a-9364-78c74ecef355" name="secure.key" value="toystore" />
+    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="77b97b27-bdb1-4103-8890-7ecd807527cc" file="properties/${mule.env}-secure.yaml" key="${secure.key}">
+        <secure-properties:encrypt algorithm="Blowfish" />
+    </secure-properties:config>
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3f2d8aaa-b62b-4c27-b1f9-c843bffd626f" basePath="/api" responseTimeout="300000" sendCorrelationId="ALWAYS">
+        <http:request-connection host="${http.request.host}" port="${http.request.port}" />
+    </http:request-config>
+    <amqp:config name="AMQP_Config" doc:name="AMQP Config" doc:id="72009995-8d48-484b-aece-bbd2af4cd46f" sendCorrelationId="ALWAYS">
+        <amqp:connection host="localhost" port="5672" username="myuser" password="mypassword" />
+    </amqp:config>
 </mule>
