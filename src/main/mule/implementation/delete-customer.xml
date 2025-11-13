@@ -6,8 +6,19 @@
 http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="delete-customer" doc:id="cdc7a75c-3007-416c-a9bd-055dde233304" >
-		<amqp:publish doc:name="Publish to the queue" doc:id="8267d841-3bb0-42bf-86d8-8496d8789f53" config-ref="AMQP_Config" exchangeName="delete.customer" sendCorrelationId="ALWAYS" />
-		<ee:transform doc:name="Transform Message" doc:id="4f70fb53-c240-4a74-8fd9-4148651bfa75" >
+		<ee:transform doc:name="Set the URIparams to payload" doc:id="1ae28292-15fd-4142-a8a7-7fb67a310663">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"customerCode": vars.URIparams
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger before publish to queue delete.customer" doc:id="f1240fa1-1e64-4733-b866-7532a5fa0f9f" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before publish to queue delete.customer, with following body: " ++ write(payload, "application/json")]' />
+		<amqp:publish doc:name="Publish to the queue delete.customer" doc:id="8267d841-3bb0-42bf-86d8-8496d8789f53" config-ref="AMQP_Config" exchangeName="delete.customer" sendCorrelationId="ALWAYS" />
+		<ee:transform doc:name="Result message" doc:id="4f70fb53-c240-4a74-8fd9-4148651bfa75" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

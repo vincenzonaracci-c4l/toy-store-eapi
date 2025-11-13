@@ -6,6 +6,18 @@
 http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="put-update-user" doc:id="fc8f7fda-3537-4fbd-9f0f-2c0acc3aa795" >
+		<logger level="INFO" doc:name="Logger before add URIparams to payload" doc:id="ed610d5b-3d06-4927-aa73-b057b53fea5e" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before add URIparams to payload, with following body: " ++ write(payload, "application/json")]' />
+		<ee:transform doc:name="Add URIparams to payload" doc:id="3ada61dc-7f80-4433-8306-5bdf28717e6a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"customerCode": vars.URIparams,
+} ++ payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger before publish to queue put.update.customer" doc:id="17f05cb4-b2db-49fb-b226-f0055fe8a0ce" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before publish to queue put.update.customer, with following body: " ++ write(payload, "application/json")]' />
 		<amqp:publish doc:name="Publish to the queue put.update.customer" doc:id="1e7c1da9-8438-4583-9f2e-20601bb8f460" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="put.update.customer"/>
 		<ee:transform doc:name="Result message" doc:id="b6e0247f-7b79-4596-b7e2-ae01a4b26fa4" >
 			<ee:message >

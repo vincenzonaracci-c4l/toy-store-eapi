@@ -3,17 +3,18 @@
     <http:listener-config name="toy-store-eapi-httpListenerConfig">
         <http:listener-connection host="${http.listener.host}" port="${http.listener.port}" />
     </http:listener-config>
-    <apikit:config name="toy-store-eapi-config" api="resource::89799b47-5637-405f-94db-38eccef79285:toy-store-eapi:1.0.3:raml:zip:toy-store-eapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="toy-store-eapi-config" api="resource::89799b47-5637-405f-94db-38eccef79285:toy-store-eapi:1.0.5:raml:zip:toy-store-eapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <global-property doc:name="Global Property" doc:id="94b6b5b1-71f0-4930-ba51-41ef3b72c87a" name="mule.env" value="loc" />
     <configuration-properties doc:name="Configuration properties" doc:id="4888c638-f93c-4697-b209-b5ceb38ab7a8" file="properties/${mule.env}.yaml" />
-    <global-property doc:name="Global Property" doc:id="a405298a-931a-4a4a-9364-78c74ecef355" name="secure.key" value="toystore" />
-    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="77b97b27-bdb1-4103-8890-7ecd807527cc" file="properties/${mule.env}-secure.yaml" key="${secure.key}">
-        <secure-properties:encrypt algorithm="Blowfish" />
-    </secure-properties:config>
     <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3f2d8aaa-b62b-4c27-b1f9-c843bffd626f" basePath="/api" responseTimeout="300000" sendCorrelationId="ALWAYS">
         <http:request-connection host="${http.request.host}" port="${http.request.port}" />
     </http:request-config>
     <amqp:config name="AMQP_Config" doc:name="AMQP Config" doc:id="72009995-8d48-484b-aece-bbd2af4cd46f" sendCorrelationId="ALWAYS">
-        <amqp:connection host="localhost" port="5672" username="myuser" password="mypassword" />
+        <amqp:connection host="${rabbit.host}" port="${rabbit.port}" username="${secure::rabbit.user}" password="${secure::rabbit.password}" />
+        <amqp:consumer-config ackMode="MANUAL" />
     </amqp:config>
+    <global-property doc:name="Global Property" doc:id="81a94e3f-d3ea-4b33-af37-4b3d2ec8a1ff" name="encryption.key" value="&quot;&quot;" />
+    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="c8a26c1e-1026-42dc-b6cc-70af69194031" file="properties/${mule.env}-secure.yaml" key="${encryption.key}">
+        <secure-properties:encrypt algorithm="Blowfish" />
+    </secure-properties:config>
 </mule>

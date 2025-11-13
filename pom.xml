@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>89799b47-5637-405f-94db-38eccef79285</groupId>
 			<artifactId>toy-store-eapi</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.5</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency>

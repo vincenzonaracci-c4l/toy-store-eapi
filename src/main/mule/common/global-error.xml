@@ -133,47 +133,47 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="35f310dd-0729-489c-9c8c-2d7d76ef391f" type="ANY">
-			<ee:transform doc:name="Any" doc:id="35b54fc4-ee9a-40fe-aa80-6335f8180041" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="dd0400ae-2a0d-48b5-897b-19f82f3e2e51" type="ANY">
+			<ee:transform doc:name="Any" doc:id="35b54fc4-ee9a-40fe-aa80-6335f8180041">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
 	"internalCode": "ERR500",
-	"title": "Not Found",
+	"title": error.description replace  "\n" with " ",
 	"category": error.errorType.identifier,
-	"description": error.description replace  "\n" with " ",
+	"description": error.detailedDescription replace  "\n" with " ",
 	"correlationId": correlationId,
 	"timestamp": (now() >> "CET")
 }
 ]]></ee:set-payload>
 				</ee:message>
-				<ee:variables >
-					<ee:set-variable variableName="httpStatus" ><![CDATA[500]]></ee:set-variable>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
         </error-handler>
 	<error-handler name="Error_Handler_APP" doc:id="99471703-ad23-4538-a04f-91a8fb818a17" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="30436650-941e-44ba-bf94-66a218d62d38" type="STREAM_MAXIMUM_SIZE_EXCEEDED">
-			<ee:transform doc:name="Unexpected Error" doc:id="b0c06e65-1bd2-4c00-8aed-b7c74312be39" >
-				<ee:message >
-					<ee:set-payload ><![CDATA[%dw 2.0
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate1" doc:id="ebf013a3-88c3-46ed-bb43-59a4310f7eef" type="ANY">
+			<ee:transform doc:name="Any" doc:id="d9e856d5-36f1-43d5-8e64-e9395c8bb16c">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
 	"internalCode": "ERR500",
-	"title": "Unexpected Error",
+	"title": error.description replace  "\n" with " ",
 	"category": error.errorType.identifier,
-	"description": error.description replace  "\n" with " ",
+	"description": error.detailedDescription replace  "\n" with " ",
 	"correlationId": correlationId,
 	"timestamp": (now() >> "CET")
 }
 ]]></ee:set-payload>
 				</ee:message>
-				<ee:variables >
-					<ee:set-variable variableName="httpStatus" ><![CDATA[500]]></ee:set-variable>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
