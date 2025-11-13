@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="get-customer-noord" doc:id="09f2cf2a-7790-4d29-a92c-b75aa3bc35bf" >
 		<logger level="INFO" doc:name="Logger before the request to the pAPI" doc:id="69bdfcb2-236d-408a-adf4-9e390d842d04" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before the request to the pAPI, with following body: " ++ write(payload, "application/json")]' />
-		<http:request doc:name="Request to pAPI to get all the customer without order" doc:id="0ac84230-b292-4dbf-80e5-a4b1e8207377" config-ref="HTTP_Request_configuration" path="/customer"/>
+		<http:request doc:name="Request to pAPI to get all the customer without order" doc:id="0ac84230-b292-4dbf-80e5-a4b1e8207377" config-ref="HTTP_Request_configuration" path="${papi.endpoint.get-customer-noord}"/>
 		<logger level="INFO" doc:name="Logger after the request to the pAPI" doc:id="4dca6ab9-c325-466f-a787-e4981e19b974" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"After the request to the pAPI, with following body: " ++ write(payload, "application/json")]' />
 	</sub-flow>
 </mule>

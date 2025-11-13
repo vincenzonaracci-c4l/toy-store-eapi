@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="put-update-order" doc:id="96645f5e-0d2a-4fd4-8c25-a15a61110893" >
 		<logger level="INFO" doc:name="Logger before publish to queue put.update.order" doc:id="1ff084eb-d2db-40a7-ad0e-c364a0c021b5" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before publish to queue put.update.order, with following body: " ++ write(payload, "application/json")]' />
-		<amqp:publish doc:name="Publish to the queue put.update.order" doc:id="8ac24d0b-7dea-447a-b4b4-889e8dbd7b61" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="put.update.order">
+		<amqp:publish doc:name="Publish to the queue put.update.order" doc:id="8ac24d0b-7dea-447a-b4b4-889e8dbd7b61" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="${rabbitmq.exchange.put-order}">
 			<amqp:message >
 				<amqp:body ><![CDATA[#[%dw 2.0
 import mergeWith from dw::core::Objects

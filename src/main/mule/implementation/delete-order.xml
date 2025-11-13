@@ -17,7 +17,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger before publish to queue delete.order" doc:id="3ee22832-f571-4f43-bd61-918b129d2c9f" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before publish to queue delete.order, with following body: " ++ write(payload, "application/json")]' />
-		<amqp:publish doc:name="Publish to the queue delete.order" doc:id="2272cdc5-d388-4791-ad8e-af629962acb2" config-ref="AMQP_Config" exchangeName="delete.order" sendCorrelationId="ALWAYS" />
+		<amqp:publish doc:name="Publish to the queue delete.order" doc:id="2272cdc5-d388-4791-ad8e-af629962acb2" config-ref="AMQP_Config" exchangeName="${rabbitmq.exchange.delete-orders}" sendCorrelationId="ALWAYS" />
 		<ee:transform doc:name="Result message" doc:id="fdb1d23f-50fd-4206-b0d6-e3e51047f504" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

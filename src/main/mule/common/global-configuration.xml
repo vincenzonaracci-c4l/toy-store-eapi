@@ -6,8 +6,8 @@
     <apikit:config name="toy-store-eapi-config" api="resource::89799b47-5637-405f-94db-38eccef79285:toy-store-eapi:1.0.5:raml:zip:toy-store-eapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <global-property doc:name="Global Property" doc:id="94b6b5b1-71f0-4930-ba51-41ef3b72c87a" name="mule.env" value="loc" />
     <configuration-properties doc:name="Configuration properties" doc:id="4888c638-f93c-4697-b209-b5ceb38ab7a8" file="properties/${mule.env}.yaml" />
-    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3f2d8aaa-b62b-4c27-b1f9-c843bffd626f" basePath="/api" responseTimeout="300000" sendCorrelationId="ALWAYS">
-        <http:request-connection host="${http.request.host}" port="${http.request.port}" />
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3f2d8aaa-b62b-4c27-b1f9-c843bffd626f" basePath="${papi.request.basepath}" responseTimeout="${papi.reconnection.timeout}" sendCorrelationId="ALWAYS">
+        <http:request-connection host="${papi.request.host}" port="${papi.request.port}" />
     </http:request-config>
     <amqp:config name="AMQP_Config" doc:name="AMQP Config" doc:id="72009995-8d48-484b-aece-bbd2af4cd46f" sendCorrelationId="ALWAYS">
         <amqp:connection host="${rabbit.host}" port="${rabbit.port}" username="${secure::rabbit.user}" password="${secure::rabbit.password}" />

@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="get-customer" doc:id="f1196303-c8a6-41cc-81c1-99d3735d3d3c" >
 		<logger level="INFO" doc:name="Logger before the request to the pAPI" doc:id="2c520c13-0ad4-48db-9f18-f5a74f8d7ac2" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before the request to the pAPI, with following body: " ++ write(payload, "application/json")]' />
-		<http:request doc:name="Request to pAPI to get a single customer" doc:id="0b3136c7-5aeb-47ab-8b9e-5bec664741a5" config-ref="HTTP_Request_configuration" path="/customer/{customerID}">
+		<http:request doc:name="Request to pAPI to get a single customer" doc:id="0b3136c7-5aeb-47ab-8b9e-5bec664741a5" config-ref="HTTP_Request_configuration" path="${papi.endpoint.get-customer}">
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {

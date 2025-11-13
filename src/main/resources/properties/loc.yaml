@@ -2,11 +2,25 @@ http:
   listener:
     host: "localhost"
     port: "8081"
+
+rabbitmq:
+  host: "localhost"
+  port: "5672"
+  exchange:
+    put-order: "put.update.order"
+    put-customer: "put.update.customer"
+    delete-orders: "delete.order"
+    delete-customer: "delete.customer"
+    post-customer: "post.create.customer"
   
+papi:
   request:
     host: "localhost"
     port: "8082"
-
-rabbit:
-  host: "localhost"
-  port: "5672"
+    basepath: "/api"
+  reconnection:
+    timeout: "30000"
+  endpoint:
+    get-customer: "/customer/{customerID}"
+    get-customer-noord: "/customer"
+  

@@ -18,7 +18,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger before publish to queue put.update.customer" doc:id="17f05cb4-b2db-49fb-b226-f0055fe8a0ce" message='#[%dw 2.0&#10;output application/java&#10;---&#10;"Before publish to queue put.update.customer, with following body: " ++ write(payload, "application/json")]' />
-		<amqp:publish doc:name="Publish to the queue put.update.customer" doc:id="1e7c1da9-8438-4583-9f2e-20601bb8f460" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="put.update.customer"/>
+		<amqp:publish doc:name="Publish to the queue put.update.customer" doc:id="1e7c1da9-8438-4583-9f2e-20601bb8f460" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="${rabbitmq.exchange.put-customer}"/>
 		<ee:transform doc:name="Result message" doc:id="b6e0247f-7b79-4596-b7e2-ae01a4b26fa4" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
