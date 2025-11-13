@@ -6,8 +6,8 @@
 http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="put-update-user" doc:id="fc8f7fda-3537-4fbd-9f0f-2c0acc3aa795" >
-		<amqp:publish doc:name="Publish to the queue" doc:id="1e7c1da9-8438-4583-9f2e-20601bb8f460" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="put.update.customer"/>
-		<ee:transform doc:name="Transform Message" doc:id="b6e0247f-7b79-4596-b7e2-ae01a4b26fa4" >
+		<amqp:publish doc:name="Publish to the queue put.update.customer" doc:id="1e7c1da9-8438-4583-9f2e-20601bb8f460" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="put.update.customer"/>
+		<ee:transform doc:name="Result message" doc:id="b6e0247f-7b79-4596-b7e2-ae01a4b26fa4" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

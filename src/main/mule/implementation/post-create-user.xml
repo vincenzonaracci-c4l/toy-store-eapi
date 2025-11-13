@@ -6,8 +6,8 @@
 http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="post-create-user" doc:id="fc8fd5d8-e5ed-4dbf-96e7-1562d34fd653" >
-		<amqp:publish doc:name="Publish to the queue" doc:id="f2b15708-f5f9-41c1-9792-b0127b513dea" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="post.create.customer"/>
-		<ee:transform doc:name="Transform Message" doc:id="aad281a9-ea22-482b-8833-84525b736ab5" >
+		<amqp:publish doc:name="Publish to the queue post.create.customer" doc:id="f2b15708-f5f9-41c1-9792-b0127b513dea" config-ref="AMQP_Config" sendCorrelationId="ALWAYS" exchangeName="post.create.customer"/>
+		<ee:transform doc:name="Result message" doc:id="aad281a9-ea22-482b-8833-84525b736ab5" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
