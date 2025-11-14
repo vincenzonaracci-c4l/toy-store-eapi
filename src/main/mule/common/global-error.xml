@@ -155,27 +155,4 @@ output application/json
 			</ee:transform>
 		</on-error-propagate>
         </error-handler>
-	<error-handler name="Error_Handler_APP" doc:id="99471703-ad23-4538-a04f-91a8fb818a17" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate1" doc:id="ebf013a3-88c3-46ed-bb43-59a4310f7eef" type="ANY">
-			<ee:transform doc:name="Any" doc:id="d9e856d5-36f1-43d5-8e64-e9395c8bb16c">
-				<ee:message>
-					<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-	"internalCode": "ERR500",
-	"title": error.description replace  "\n" with " ",
-	"category": error.errorType.identifier,
-	"description": error.detailedDescription replace  "\n" with " ",
-	"correlationId": correlationId,
-	"timestamp": (now() >> "CET")
-}
-]]></ee:set-payload>
-				</ee:message>
-				<ee:variables>
-					<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
-				</ee:variables>
-			</ee:transform>
-		</on-error-propagate>
-	</error-handler>
 </mule>
