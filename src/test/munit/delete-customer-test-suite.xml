@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="delete-customer-test-suite.xml" />
+	<munit:test name="delete-customer-test-suite-delete-customerTest" doc:id="2c5481bb-1a01-4333-8e21-8aaff0c56aff" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="5e0631f2-91dc-4bf6-b5a1-49dcb32585f3" processor="amqp:publish">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Publish to the queue delete.customer" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="8267d841-3bb0-42bf-86d8-8496d8789f53" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete-customer" doc:id="4e1b9d00-32a1-4185-b25b-c82771d44948" name="delete-customer"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="c8986e3a-953d-4948-870b-8eca49862b59" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Result message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="4f70fb53-c240-4a74-8fd9-4148651bfa75" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+</mule>

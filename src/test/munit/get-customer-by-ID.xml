@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="get-customer.xml" />
+	<munit:test
+		name="toy-store-eapi-test-suite-get:\customer\(customerID):toy-store-eapi-configTest"
+		doc:id="2a8609db-49cf-4b44-a7ed-69362ba4e398" description="Test">
+		<munit:behavior>
+			<munit:set-event doc:name="uriParams" doc:id="1710ad3d-709c-41ec-a350-4c431421657a">
+				<munit:payload value='#[readUrl("classpath://put-update-customer.dwl")]' />
+				<munit:attributes value='#[readUrl("classpath://set-attributes.dwl")]' />
+				<munit:variables >
+					<munit:variable key="URIparams" value="1" />
+				</munit:variables>
+			</munit:set-event>
+			<munit-tools:mock-when
+				doc:name="do the request"
+				doc:id="7b9dd5f2-1e92-4a8e-8ca2-f9cac7a837fd"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload
+						value='#[readUrl("classpath://get-customer-by-id-output.dwl")]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="the request"
+				doc:id="b1aa7cac-8935-451a-a973-a36d9e418773"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call>
+					<munit-tools:assert-that
+						doc:name="payload is null"
+						doc:id="3391e8fc-61cf-49d2-b299-361f6ebd90ba"
+						expression="#[payload]" is="#[MunitTools::nullValue()]" />
+				</munit-tools:before-call>
+				<munit-tools:after-call>
+					<munit-tools:assert-equals
+						doc:name="to get-customer-by-id-output"
+						doc:id="87dc1d2b-4296-4fe2-bb3e-910c348ac975" actual="#[payload]"
+						expected='#[readUrl("classpath://get-customer-by-id-output.dwl")]' />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref
+				doc:name="Flow-ref to get:\customer\(customerID):toy-store-eapi-config"
+				doc:id="8707cb80-2420-4c63-84f2-421865ac926e"
+				name="get:\customer\(customerID):toy-store-eapi-config" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call
+				doc:name="to the last component"
+				doc:id="0a932d14-1d25-4735-9869-4bfe968440ad" processor="logger"
+				times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="b07ea050-ad49-4581-9438-59938f692b28"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>	
+</mule>

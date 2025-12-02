@@ -10,10 +10,10 @@
         <http:request-connection host="${papi.request.host}" port="${papi.request.port}" />
     </http:request-config>
     <amqp:config name="AMQP_Config" doc:name="AMQP Config" doc:id="72009995-8d48-484b-aece-bbd2af4cd46f" sendCorrelationId="ALWAYS">
-        <amqp:connection host="${rabbit.host}" port="${rabbit.port}" username="${secure::rabbit.user}" password="${secure::rabbit.password}" />
+        <amqp:connection host="${rabbitmq.host}" port="${rabbitmq.port}" username="${secure::rabbit.user}" password="${secure::rabbit.password}" />
         <amqp:consumer-config ackMode="MANUAL" />
     </amqp:config>
-    <global-property doc:name="Global Property" doc:id="81a94e3f-d3ea-4b33-af37-4b3d2ec8a1ff" name="encryption.key" value="&quot;&quot;" />
+    <global-property doc:name="Global Property" doc:id="81a94e3f-d3ea-4b33-af37-4b3d2ec8a1ff" name="encryption.key" value='""' />
     <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="c8a26c1e-1026-42dc-b6cc-70af69194031" file="properties/${mule.env}-secure.yaml" key="${encryption.key}">
         <secure-properties:encrypt algorithm="Blowfish" />
     </secure-properties:config>

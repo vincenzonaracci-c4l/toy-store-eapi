@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="get-customer.xml" />
+	<munit:test
+		name="toy-store-eapi-test-suite-get:\customer:toy-store-eapi-configTest"
+		doc:id="7b161668-3f05-42c0-b627-75887299d139" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when
+				doc:name="do the request"
+				doc:id="e67e9ecf-f1eb-47c3-b41c-61fab96a0b3f"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="${papi.endpoint.get-customer-noord}"
+						attributeName="path" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="the request"
+				doc:id="e2b8ef87-44f8-4fcb-bdbc-27c88e05281e"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="Request to pAPI to get a single customer"
+						attributeName="doc:name" />
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+					<munit-tools:with-attribute
+						whereValue="Request to pAPI to get a single customer"
+						attributeName="doc:name" />
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+					<munit-tools:with-attribute
+						whereValue="Request to pAPI to get a single customer"
+						attributeName="doc:name" />
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+					<munit-tools:with-attribute
+						whereValue="Request to pAPI to get a single customer"
+						attributeName="doc:name" />
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+					<munit-tools:with-attribute
+						whereValue="Request to pAPI to get a single customer"
+						attributeName="doc:name" />
+					<munit-tools:with-attribute
+						whereValue="0b3136c7-5aeb-47ab-8b9e-5bec664741a5"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call>
+					<munit-tools:assert-that
+						doc:name="payload is null"
+						doc:id="1a20d645-cfdd-4846-af51-51682b7e19c1"
+						expression="#[payload]" is="#[MunitTools::nullValue()]" />
+				</munit-tools:before-call>
+				<munit-tools:after-call>
+					<munit-tools:assert-equals
+						doc:name="to get-customers-output"
+						doc:id="31d067c2-63e2-460a-940b-9dad3d727c6e" actual="#[payload]"
+						expected='#[readUrl("classpath://get-customers-output.dwl")]' />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref
+				doc:name="Flow-ref to get:\customer:toy-store-eapi-config"
+				doc:id="79ea331f-66bf-418f-9f98-d13ec0075eec"
+				name="get:\customer:toy-store-eapi-config" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call
+				doc:name="to the last component"
+				doc:id="dcdebf67-3988-4a1e-8335-e15444d06bdb" processor="logger"
+				times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="4dca6ab9-c325-466f-a787-e4981e19b974"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+</mule>

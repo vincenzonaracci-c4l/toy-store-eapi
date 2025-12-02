@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="   http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd   http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd   http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="delete-order.xml"/>
+	<munit:test description="Test" doc:id="b19e2aa5-d6b0-4531-8797-49071b7b6fed" name="toy-store-eapi-test-suite-delete:\customer\(customerID)\orders:toy-store-eapi-configTest">
+		<munit:behavior>
+			<munit:set-event doc:id="1766f666-7201-4dde-a7b0-e12d36116cd8" doc:name="uriParams">
+				<munit:payload value="#[readUrl(&quot;classpath://put-update-customer.dwl&quot;)]"/>
+				<munit:attributes value="#[readUrl(&quot;classpath://set-attributes.dwl&quot;)]"/>
+				<munit:variables>
+					<munit:variable key="URIparams" value="1"/>
+				</munit:variables>
+			</munit:set-event>
+			<munit-tools:mock-when doc:id="849ceaaa-9997-4531-b926-ca4ff391345e" doc:name="do the request" processor="amqp:publish">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="Publish to the queue delete.order"/>
+					<munit-tools:with-attribute attributeName="doc:id" whereValue="2272cdc5-d388-4791-ad8e-af629962acb2"/>
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:id="f3cd9696-0fe8-4171-a0f1-c384852f2951" doc:name="the request" processor="ee:transform">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="Set the URIparams to payload"/>
+					<munit-tools:with-attribute attributeName="doc:id" whereValue="af53da17-db81-424e-9993-057e216e7e95"/>
+				</munit-tools:with-attributes>
+				<munit-tools:before-call>
+					<munit-tools:assert-equals actual="#[payload]" doc:id="fd9b5402-30c7-4c62-8fc8-5862b6f62034" doc:name="payload is null" expected="#[null]"/>
+				</munit-tools:before-call>
+				<munit-tools:after-call>
+					<munit-tools:assert doc:id="2d2cfbc0-dc66-4272-8ed8-b0413a8aad3d" doc:name="payload not be null"/>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref doc:id="53634106-8e86-422e-83e1-50b62a8a31b7" doc:name="Flow-ref to delete:\customer\(customerID)\orders:toy-store-eapi-config" name="delete:\customer\(customerID)\orders:toy-store-eapi-config"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:id="1a94a146-ce30-4e8a-9bef-631f65aa01cb" doc:name="to the last component" processor="ee:transform" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="Result message"/>
+					<munit-tools:with-attribute attributeName="doc:id" whereValue="fdb1d23f-50fd-4206-b0d6-e3e51047f504"/>
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+</mule>
